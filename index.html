@@ -1,10 +1,86 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" ng-app="petStoreApp">
 <head>
     <meta charset="UTF-8">
-    <title>Title</title>
+    <link rel="stylesheet" href="bower_components/ng-tags-input/ng-tags-input.min.css">
+    <link rel="stylesheet" href="bower_components/bootstrap/dist/css/bootstrap.css">
+    <link rel="stylesheet" href="bower_components/bootstrap/dist/css/bootstrap-theme.css">
+    <title>Pet Store Application</title>
+
+    <script type="text/javascript" src="bower_components/jquery/dist/jquery.min.js"></script>
+    <script type="text/javascript" src="bower_components/bootstrap/dist/js/bootstrap.min.js"></script>
+    <script type="text/javascript" src="bower_components/angular/angular.min.js"></script>
+    <script type="text/javascript" src="bower_components/angular-route/angular-route.min.js"></script>
+    <script type="text/javascript" src="bower_components/ng-tags-input/ng-tags-input.min.js"></script>
+    <script type="text/javascript" src="js/app.module.js"></script>
+    <script type="text/javascript" src="js/PetStoreService.js"></script>
+    <script type="text/javascript" src="js/addNewPetController.js"></script>
+    <script type="text/javascript" src="js/findPetController.js"></script>
+
 </head>
-<body>
+<body class="container">
+
+<div class="jumbotron">
+
+    <div class="add-pet" ng-controller="addNewPetController as addPet">
+        <h2>Here will be listed the new elements added to the Pet Store (using the 'POST' method)</h2>
+        <table class="table table-bordered">
+            <thead>
+            <tr>
+                <td><strong>Name</strong></td>
+            </tr>
+            </thead>
+            <tbody>
+            <tr ng-repeat="pet in addPet.petsList">
+                <td><em>{{pet.name}}</em></td>
+            </tr>
+            </tbody>
+        </table>
+
+        <form class="form-inline" ng-submit="addPet.addNewPet()">
+            <!--<input type="text" class="form-control" placeholder="Pet Name" ng-model="addPet.petFormData.name"/>-->
+
+            <tags-input ng-model="addPet.petTags"
+                        display-property="name"
+                        placeholder="Add a pet">
+                <auto-complete source="addPet.loadTags($query)"
+                               loadOnFocus="true"
+                               load-on-empty="true">
+
+                </auto-complete>
+            </tags-input>
+
+            <button type="submit" class="btn btn-success">Add</button>
+        </form>
+
+        <div class="tags-model" ng-model="addPet.petTags">
+            {{addPet.petTags}}
+        </div>
+
+        <div ng-if="addPet.PostResponseData">
+            The response from the server :
+            {{addPet.PostResponseData}}
+        </div>
+    </div>
+
+    <hr>
+
+    <div class="find-pet" ng-controller="findPetController as findPet">
+        <form class="form-inline" ng-submit="findPet.getPet()">
+            <input type="text" class="form-control" placeholder="Search pet by ID" ng-model="findPet.petFormData.id"/>
+
+            <button type="submit" class="btn btn-success">Find</button>
+        </form>
+
+        <div ng-if="findPet.GetResponseData">
+            The response from the server :
+            {{findPet.GetResponseData}}
+        </div>
+    </div>
+
+
+
+</div>
 
 </body>
 </html>
